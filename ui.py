@@ -60,7 +60,7 @@ class SubmitButton(Button):
     """
 
 
-class MCConsoleCLI(Screen):
+class MCConsoleCLIScreen(Screen):
     CSS = """
     #sidebar {
         dock: right;
@@ -112,12 +112,11 @@ class MCConsoleCLI(Screen):
         _input.value = ""
 
 
-class MCConsoleCLILayout(App):
+class MCConsoleCLI(App):
     def on_mount(self) -> None:
-        self.title = "MCConsoleCLI"
-        self.push_screen(MCConsoleCLI())
+        self.push_screen(MCConsoleCLIScreen())
 
 
 if __name__ == "__main__":
-    app = MCConsoleCLILayout()
+    app = MCConsoleCLI()
     app.run()

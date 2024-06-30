@@ -3,6 +3,8 @@ import json
 
 import requests
 
+from ui import MCConsoleCLI
+
 # Read settings from config.json
 with open("config.json") as config_file:
     config = json.load(config_file)
@@ -99,6 +101,11 @@ elif args.command == "servers":
         )
         message = response.json()["message"]
         print(message)
+
+# Starts the textual UI
+elif args.command == "attach":
+    app = MCConsoleCLI()
+    app.run()
 
 else:
     print(f"Invalid command: {args.command}")

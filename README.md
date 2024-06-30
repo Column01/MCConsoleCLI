@@ -6,6 +6,7 @@ This is a command-line interface (CLI) tool that interacts with a [MCConsoleAPI]
 
 - Python 3.x
 - `requests` library (can be installed via `pip install requests`)
+- `textual` library (can be installed via `pip install textual`)
 
 ## Configuration
 

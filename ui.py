@@ -1,11 +1,11 @@
 from textual.app import App, ComposeResult, on
 from textual.containers import Center
 from textual.screen import Screen
-from textual.widgets import Button, Input, RichLog, Select
+from textual.widgets import Button, Footer, Header, Input, RichLog, Select
 
 from server import Server
 from util import get_api_key, get_servers, get_url_and_port
-from widgets import ColumnsContainer, InputContainer, StyledFooter, StyledHeader
+from widgets import ColumnsContainer, InputContainer
 
 
 class MCConsoleCLIScreen(Screen):
@@ -26,11 +26,19 @@ class MCConsoleCLIScreen(Screen):
         border: solid #4a4a4a;
         width: 75%;
     }
+
+    Header {
+        dock: top;
+    }
+
+    Footer {
+        dock: bottom;
+    }
     """
 
     def compose(self) -> ComposeResult:
-        yield StyledHeader(id="header")
-        yield StyledFooter(id="footer")
+        yield Header(id="header")
+        yield Footer(id="footer")
 
         with ColumnsContainer(id="output-columns"):
             self.output = RichLog(id="output")

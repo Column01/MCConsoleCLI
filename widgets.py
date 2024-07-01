@@ -1,21 +1,4 @@
 from textual.containers import Container, Vertical
-from textual.widgets import Footer, Header
-
-
-class StyledHeader(Header):
-    DEFAULT_CSS = """
-    StyledHeader {
-        dock: top;
-    }
-    """
-
-
-class StyledFooter(Footer):
-    DEFAULT_CSS = """
-    StyledFooter {
-        dock: bottom;
-    }
-    """
 
 
 class ColumnsContainer(Vertical):

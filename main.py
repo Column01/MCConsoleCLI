@@ -1,20 +1,13 @@
 import argparse
-import json
 
 import requests
 
 from ui import MCConsoleCLI
+from util import get_api_key, get_url_and_port, get_servers
 
-# Read settings from config.json
-with open("config.json") as config_file:
-    config = json.load(config_file)
 
-url = config["url"]
-port = config["port"]
-
-# Read API key from api_key.txt
-with open("api_key.txt") as api_key_file:
-    api_key = api_key_file.read().strip()
+url, port = get_url_and_port()
+api_key = get_api_key()
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description="CLI tool to interact with an HTTP server")
@@ -77,30 +70,15 @@ elif args.command == "stop":
 
 # List servers command
 elif args.command == "servers":
-    # Perform servers command to list running servers
-    servers_url = f"{url}:{port}/servers"
-    headers = {"x-api-key": api_key}
-
-    response = requests.get(servers_url, headers=headers)
-
-    if response.status_code == 200:
-        servers_data = response.json()
-        servers = servers_data["servers"]
-
-        if len(servers) > 0:
-            print("Running servers:")
-            for server in servers:
-                print(f"  Server Name: {server['name']}")
-                print(f"  Server Path: {server['path']}")
-                print()
-        else:
-            print("No running servers found.")
+    servers = get_servers(url, port, api_key)
+    if isinstance(servers, list) and len(servers) > 0:
+        print("Running servers:")
+        for server in servers:
+            print(f"  Server Name: {server['name']}")
+            print(f"  Server Path: {server['path']}")
+            print()
     else:
-        print(
-            f"Failed to retrieve running servers. Status code: {response.status_code}"
-        )
-        message = response.json()["message"]
-        print(message)
+        print(servers)
 
 # Starts the textual UI
 elif args.command == "attach":

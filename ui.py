@@ -5,13 +5,7 @@ from textual.widgets import Button, Input, RichLog, Select
 
 from server import Server
 from util import get_api_key, get_servers, get_url_and_port
-from widgets import (
-    ColumnsContainer,
-    InputContainer,
-    StyledFooter,
-    StyledHeader,
-    SubmitButton,
-)
+from widgets import ColumnsContainer, InputContainer, StyledFooter, StyledHeader
 
 
 class MCConsoleCLIScreen(Screen):
@@ -20,20 +14,15 @@ class MCConsoleCLIScreen(Screen):
         dock: right;
         width: 20;
         height: 100%;
-        color: #ffffff;
-        background: #333333;
         border: solid #4a4a4a;
         scrollbar-size: 0 0;
     }
 
     #output {
-        color: #ffffff;
         border: solid #4a4a4a;
     }
 
     #input {
-        background: #1e1e1e;
-        color: #ffffff;
         border: solid #4a4a4a;
         width: 75%;
     }
@@ -52,7 +41,7 @@ class MCConsoleCLIScreen(Screen):
             yield self.sidebar
         with InputContainer(id="input-columns"):
             yield Input(id="input", placeholder="Send a Command")
-            yield Center(SubmitButton("Submit", id="submit"))
+            yield Center(Button("Submit", id="submit"))
             self.dropdown = Select(id="dropdown", options=[])
             yield Center(self.dropdown)
 

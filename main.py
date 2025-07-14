@@ -25,9 +25,9 @@ args = parser.parse_args()
 if args.command == "start":
     if args.server_name:
         # Perform start action with the specified server name and optional server path
-        start_url = f"{url}:{port}/start_server"
+        start_url = f"{url}:{port}/servers/{args.server_name}/start"
         headers = {"x-api-key": api_key}
-        params = {"server_name": args.server_name}
+        params = {}
 
         if args.server_path:
             params["server_path"] = args.server_path
@@ -50,7 +50,7 @@ if args.command == "start":
 elif args.command == "stop":
     if args.server_name:
         # Perform stop action with the specified server name
-        stop_url = f"{url}:{port}/stop_server"
+        stop_url = f"{url}:{port}/servers/{args.server_name}/stop"
         headers = {"x-api-key": api_key}
         params = {"server_name": args.server_name}
 
@@ -69,21 +69,24 @@ elif args.command == "stop":
         print("Please provide a server name for the stop command.")
 
 # List servers command
-elif args.command == "servers":
-    servers = get_servers(url, port, api_key)
-    if isinstance(servers, list) and len(servers) > 0:
-        print("Running servers:")
-        for server in servers:
-            print(f"  Server Name: {server['name']}")
-            print(f"  Server Path: {server['path']}")
-            print()
+elif args.command == "list":
+    servers = get_servers(api_key)
+    if isinstance(servers, list):
+        if len(servers) > 0:
+            print("Running Minecraft Servers:")
+            for server in servers:
+                print(f"  Server Name: {server['name']}")
+                print(f"  Server Path: {server['path']}")
+                print()
+        else:
+            print("No Minecraft Servers are running")
     else:
+        # Error messages
         print(servers)
 
 # Starts the textual UI
 elif args.command == "attach":
     app = MCConsoleCLI()
     app.run()
-
 else:
     print(f"Invalid command: {args.command}")

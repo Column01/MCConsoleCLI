@@ -31,7 +31,9 @@ python main.py <command> [server_name] [server_path]
 - `stop`: Stop a server with the specified server name.
   - `server_name`: Required argument specifying the name of the server to stop.
 
-- `servers`: List all running servers.
+- `list`: List all running servers.
+
+- `attach`: Starts an instance of the (**WIP**) terminal UI
 
 ### Examples
 
@@ -50,5 +52,11 @@ python main.py stop my_server
 List running servers:
 
 ```bash
-python main.py servers
+python main.py list
+```
+
+Start the terminal UI:
+
+```bash
+python main.py attach
 ```

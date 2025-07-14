@@ -3,8 +3,9 @@ import json
 import requests
 
 
-def get_servers(url: str, port: str, api_key: str) -> list | str:
+def get_servers(api_key: str) -> list | str:
     # Perform servers command to list running servers
+    url, port = get_url_and_port()
     servers_url = f"{url}:{port}/servers"
     headers = {"x-api-key": api_key}
 

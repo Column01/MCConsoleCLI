@@ -11,19 +11,21 @@ class Server:
         self.server_name = server_name
         self.output_buffer = collections.deque(maxlen=1000)
         self.player_list_buffer = []
+        self.headers = {"x-api-key": self.app.api_key} if self.app.api_key else None
+        self.base_url = f"{self.app.url}/servers/{server_name}"
         self.stop_event = threading.Event()
+
         self.output_thread = threading.Thread(target=self.stream_output)
-        self.player_list_thread = threading.Thread(target=self.update_player_list)
         self.output_thread.start()
+
+        self.player_list_thread = threading.Thread(target=self.update_player_list)
         self.player_list_thread.start()
 
     def stream_output(self):
-        url = f"{self.app.url}:{self.app.port}/output"
-        headers = {"x-api-key": self.app.api_key} if self.app.api_key else None
-        params = {"server_name": self.server_name}
+        url = self.base_url + "/output"
         try:
             with self.app.session.get(
-                url, headers=headers, params=params, stream=True
+                url, headers=self.headers, stream=True
             ) as response:
                 buffer = ""
                 if self.stop_event.is_set() or response.status_code == 404:
@@ -42,6 +44,7 @@ class Server:
                                 try:
                                     json_data = json.loads(line)
                                     self.output_buffer.append(json_data)
+
                                 except json.JSONDecodeError:
                                     print(f"Error decoding JSON: {line}")
         except requests.exceptions.RequestException as e:
@@ -51,21 +54,17 @@ class Server:
                 self.app.refresh_servers()
 
     def update_player_list(self):
-        url = f"{self.app.url}:{self.app.port}/players"
-        headers = {"x-api-key": self.app.api_key} if self.app.api_key else None
-        params = {"server_name": self.server_name}
         while not self.stop_event.is_set():
             try:
-                response = requests.get(url, headers=headers, params=params)
+                response = requests.get(self.base_url + "/players", headers=self.headers)
                 response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
                 json_data = response.json()
                 player_list = json_data.get("players", [])
                 self.player_list_buffer = player_list
             except requests.exceptions.RequestException as e:
                 print(f"Error occurred while retrieving player list: {e}")
-
-            # Wait for 3 seconds before the next update
-            self.stop_event.wait(3)
+            # Update player list every 5 seconds
+            self.stop_event.wait(5)
 
     def get_output(self):
         return self.output_buffer.copy()

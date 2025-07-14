@@ -102,7 +102,7 @@ class MCConsoleCLI(App):
         ]
         _ = [self.servers.pop(server, None) for server in to_remove]
 
-        server_list = get_servers(self.url, self.port, self.api_key)
+        server_list = get_servers(self.api_key)
         if isinstance(server_list, str):
             quit(server_list)
         elif len(server_list) == 0:

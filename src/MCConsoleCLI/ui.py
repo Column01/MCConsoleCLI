@@ -3,9 +3,9 @@ from textual.containers import Center
 from textual.screen import Screen
 from textual.widgets import Button, Footer, Header, Input, RichLog, Select
 
-from server import Server
-from util import get_api_key, get_servers, get_url_and_port
-from widgets import ColumnsContainer, InputContainer
+from .server import Server
+from .util import get_api_key, get_servers, get_url_and_port
+from .widgets import ColumnsContainer, InputContainer
 
 
 class MCConsoleCLIScreen(Screen):

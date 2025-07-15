@@ -1,2 +1,3 @@
 ﻿api_key.txt
 __pycache__
+*.egg-info

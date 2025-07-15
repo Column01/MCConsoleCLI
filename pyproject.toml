@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "MCConsoleCLI"
+version = "0.0.1"
+authors = [
+    {name = "Column01", email = "column01dev@gmail.com"},
+]
+description = "A CLI tool and TUI for interacting with MCConsoleAPI"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "requests",
+    "textual",
+]
+
+[project.scripts]
+mcc-cli = "MCConsoleCLI.main:main"
